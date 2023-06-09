@@ -3,6 +3,6 @@
 single_view/Video_16frames_test_without_A_crop_singleview/*
 single_view/Video_16frames_train_without_A_crop_singleview/*
 single_view/weight/*
-single_view/Single_view_Summary/*
 !single_view/weight/.gitkeep
+single_view/Single_view_Summary/*
 !single_view/Single_view_Summary/.gitkeep
