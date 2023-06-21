@@ -1,5 +1,6 @@
 *.npy
 *.pth
+*.mp4
 single_view/Video_16frames_test_without_A_crop_singleview/*
 single_view/Video_16frames_train_without_A_crop_singleview/*
 single_view/weight/*
