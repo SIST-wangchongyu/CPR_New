@@ -7,7 +7,7 @@ import torch.nn.parallel
 import sys
 import torch.nn.parallel
 # from sklearn.metrics import confusion_matrix
-import matplotlib.pyplot as plt
+
 # -*- coding: utf-8 -*-
 sys.path.append("../../")
 from tensorboardX import SummaryWriter
@@ -50,11 +50,11 @@ if torch.cuda.is_available():
     if not args.cuda:
         print("WARNING: You have a CUDA device, so you should probably run with --cuda")
 
-root = 'F:\\CPR\\CPR_git\\single_view'
+root = 'F:\\CPR\\CPR_6\\single_view'
 record_path = os.path.join(root,'Single_view_Summary')
 epochs =30
 lr = 2e-3
-batch_size = 8
+batch_size = 1
 n_classes = 5
 kernel_size = 2
 channel_sizes = 128
@@ -73,10 +73,10 @@ print(args)
 
 #video
 
-train_label_root=os.path.join(root, '../../CPR_6/labels', 'labels_16frames_train_without_A_crop_single_view.npy')
+train_label_root=os.path.join(root, 'labels', 'labels_16frames_train_without_A_crop_single_view.npy')
 train_data_root =os.path.join(root,'Video_16frames_train_without_A_crop_singleview')
 test_data_root  =os.path.join(root,'Video_16frames_test_without_A_crop_singleview')
-test_label_root =os.path.join(root, '../../CPR_6/labels', 'labels_16frames_test_without_A_crop_single_view.npy')
+test_label_root =os.path.join(root, 'labels', 'labels_16frames_test_without_A_crop_single_view.npy')
 
 
 train_dataset = Feeder(train_data_root,train_label_root,0)
@@ -86,13 +86,13 @@ test_data_loader = feeder_data_generator(test_dataset,batch_size=batch_size,samp
 device_count = torch.cuda.device_count()
 sum_weight =0
 device_ids = list(range(device_count))
-print(device_ids)
+
 model = New_R3d()
 params_to_update = []
 params_not_to_update = []
-# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-device =torch.device("cpu")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(device)
+# device =torch.device("cpu")
 # print(model)
 # for name, param in model.named_parameters():
 #
@@ -135,8 +135,8 @@ def train(ep):
         correct += pred.eq(target.data.view_as(pred)).sum().item()
         total += len(target)
 
-        # loss = F.cross_entropy(output, target).cuda()
-        loss = F.cross_entropy(output, target).to(device)
+        loss = F.cross_entropy(output, target).cuda()
+        # loss = F.cross_entropy(output, target).to(device)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -222,8 +222,8 @@ def test(epoch):
             target_cpu = target.cpu()
             pred_cpu = pred.cpu()
             output_cpu =output.cpu()
-            # loss = F.cross_entropy(output, target).cuda()
-            loss = F.cross_entropy(output, target).to(device)
+            loss = F.cross_entropy(output, target).cuda()
+            # loss = F.cross_entropy(output, target).to(device)
             test_loss += loss
 
 
