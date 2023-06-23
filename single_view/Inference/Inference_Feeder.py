@@ -22,8 +22,10 @@ class Feeder(data.Dataset):
     def __init__(self, videos_dir):
         self.videos_dir = videos_dir
         self.videos = []
-        self.labels = []
-        self.labels = torch.zeros(1091)
+
+        file_list = os.listdir(videos_dir)
+        file_num_count = len(file_list)
+        self.labels = torch.zeros(file_num_count)
     def _load_label_numpy(self):
         self.labels = torch.from_numpy(np.load(self.labels_dir, allow_pickle=True))
         print(self.labels)
@@ -55,7 +57,7 @@ def feeder_data_generator(dataset, batch_size):
 
 if __name__ == '__main__':
     # multiprocessing.freeze_support()
-    label_dir = "/public/home/wangchy5/CPR/R3d/TestData"
+    label_dir = "/public/home/wangchy5/CPR/R3d/Inference_Data"
     train_dataset = Feeder(label_dir)
     train_data_loader = feeder_data_generator(train_dataset, batch_size=1)
     count_0 = 0
